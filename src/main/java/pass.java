@@ -4,6 +4,6 @@ public class pass {
 	public static void main(String[] args) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		System.out.println(encoder.encode("143"));
+		System.out.println(encoder.encode("mby123"));
 	}
 }

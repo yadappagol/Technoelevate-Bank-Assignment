@@ -1,14 +1,12 @@
 package com.example.demo.service;
 
 
-import com.example.demo.message.MessageInfo;
+import com.example.demo.message.ResponseMessageInfo;
 
 
 public interface AdminService {
 
-	//MessageInfo authentication(int id ,String password);
-
-	MessageInfo getAllAccountHolders();
+	ResponseMessageInfo getAllAccountHolders();
 	
 }
 

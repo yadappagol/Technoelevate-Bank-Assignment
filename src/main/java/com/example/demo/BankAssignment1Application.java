@@ -13,13 +13,9 @@ public class BankAssignment1Application {
 	public static void main(String[] args) {
 		SpringApplication.run(BankAssignment1Application.class, args);
 	}
-	
-	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-
 	}
-	
 
 }

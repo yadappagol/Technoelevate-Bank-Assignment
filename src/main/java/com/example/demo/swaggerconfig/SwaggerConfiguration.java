@@ -4,11 +4,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 
-import com.example.demo.securityconfig.JWTConfig;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -26,7 +25,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
+	
+	
 	private final String AUTHENTICATION_HEADER = "Authorization";
+	
+	@Autowired
+	private SwaggerPropertyDetails swagger;
 
 	@Bean
 	public Docket api() {
@@ -43,10 +47,10 @@ public class SwaggerConfiguration {
 
 	private ApiInfo apiInfo() {
 
-		return new ApiInfo("Spring Boot Blog REST APIs with JWT Based Authentication And Authorization",
-				"Spring Boot Along with JWT Blog REST API Documentation", "1", "Terms of service",
-				new Contact("Dundappa B", "www.example.net", "yadappagol@gmail.com"), "License of API",
-				"API license URL", Collections.emptyList());
+		return new ApiInfo(swagger.getTitle(),
+				swagger.getDoc(),swagger.getVersion(), swagger.getTermsOfService(),
+				new Contact(swagger.getUsername(), swagger.getWebsite(), swagger.getEmail()), swagger.getLicense(),
+				swagger.getLicenseurl(), Collections.emptyList());
 	}
 
 	private SecurityContext securityContext() {

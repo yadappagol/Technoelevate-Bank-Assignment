@@ -4,7 +4,9 @@ public class JWTConfig{
 
 	private org.springframework.core.env.Environment environment;
 	
+	@SuppressWarnings("unused")
 	private long access_token;
+	@SuppressWarnings("unused")
 	private long refresh_token;
 	
 	public long getAccess_token() {

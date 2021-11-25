@@ -11,8 +11,6 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +27,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.demo.dto.AccountHolder;
-import com.example.demo.message.MessageInfo;
+import com.example.demo.message.ResponseMessageInfo;
 import com.example.demo.securityconfig.JWTConfig;
 import com.example.demo.service.AccountHolderService;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -40,46 +38,53 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(path = "/api/v1/accountholder")
 @Api(value = "/api/v1/accountholder", tags = "Bank Assignment")
+@Slf4j
 public class AccountHolderController {
 
 	@Autowired
 	private AccountHolderService accountHolderService;
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private JWTConfig config;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AccountHolderController.class);
 
 
 	@PutMapping(path = "/withdraw/{amount}")
 	@ApiOperation(value="withdraw Money", notes="withdraw Money",tags="Bank Assignment")
 	@ApiResponses(value= { @ApiResponse(code=200,message="Withdraw Successfully!!"),
 	@ApiResponse(code=404,message="Invalid AccoountHolder Id"),@ApiResponse(code=403,message="Access Denied!!")})
-	public ResponseEntity<MessageInfo> withdraw(@PathVariable double amount) {
-			LOGGER.info("WITHDRAWN SUCCESSFULLY.THE WITHDRAWN AMOUNT IS : " + amount);
-			return new ResponseEntity<MessageInfo>(accountHolderService.withdraw(amount), HttpStatus.OK);
+	public ResponseEntity<ResponseMessageInfo> withdraw(@PathVariable double amount) {
+		log.info("--------------------------:Controll Inside The Withdraw method :---------------------");
+		log.info("WITHDRAWN SUCCESSFULLY.THE WITHDRAWN AMOUNT IS : " + amount);
+			return new ResponseEntity<ResponseMessageInfo>(accountHolderService.withdraw(amount), HttpStatus.OK);
 	}
 
+	
+	
 	@PutMapping(path = "/deposit/{amount}")
 	@ApiOperation(value="Deposite Money", notes="deposite Money",tags="Bank Assignment")
 	@ApiResponses(value= { @ApiResponse(code=200,message="Depositted Successfully!!"),
 	@ApiResponse(code=404,message="Invalid AccoountHolder Id"),@ApiResponse(code=403,message="Access Denied!!")})
-	public ResponseEntity<MessageInfo> deposite(@PathVariable("amount") double amount) {
-		LOGGER.info("DEPOSITTED SUCCESSFULLY.THE DEPOSITTED AMOUNT IS : " + amount);
-		return new ResponseEntity<MessageInfo>(accountHolderService.deposit(amount), HttpStatus.OK);
+	public ResponseEntity<ResponseMessageInfo> deposite(@PathVariable("amount") double amount) {
+		log.info("--------------------------:Controll Inside The Deposite method :---------------------");
+		log.info("DEPOSITTED SUCCESSFULLY.THE DEPOSITTED AMOUNT IS : " + amount);
+		return new ResponseEntity<ResponseMessageInfo>(accountHolderService.deposit(amount), HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/checkbalance")
 	@ApiOperation(value="Available Money", notes="Available Money",tags="Bank Assignment")
 	@ApiResponses(value= { @ApiResponse(code=200,message="Balance Fetched SuccessFully.."),
 	@ApiResponse(code=404,message="Invalid AccoountHolder Id"),@ApiResponse(code=403,message="Access Denied!!")})
-	public ResponseEntity<MessageInfo> checkBalance() {
-		LOGGER.info("YOUR BALANCE IS : " + accountHolderService.checkBalance());
-		return new ResponseEntity<MessageInfo>(accountHolderService.checkBalance(), HttpStatus.OK);
+	public ResponseEntity<ResponseMessageInfo> checkBalance() {
+		log.info("--------------------------:Controll Inside The CheckBalance method :---------------------");
+		log.info("YOUR BALANCE IS : " + accountHolderService.checkBalance());
+		return new ResponseEntity<ResponseMessageInfo>(accountHolderService.checkBalance(), HttpStatus.OK);
 	}
 
 

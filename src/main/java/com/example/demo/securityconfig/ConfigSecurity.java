@@ -31,9 +31,6 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private AccountHolderServiceImpl accountHolderServiceImpl;
 	
-	
-	
-	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		System.out.println("configure auth");

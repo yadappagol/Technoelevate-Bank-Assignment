@@ -1,18 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.AccountHolder;
-import com.example.demo.message.MessageInfo;
+import com.example.demo.message.ResponseMessageInfo;
 
 public interface AccountHolderService {
 
-	// MessageInfo verification(int id, String password);
-
 	AccountHolder findByUserName(String username);
 
-	MessageInfo withdraw(double amount);
+	ResponseMessageInfo withdraw(double amount);
 
-	MessageInfo deposit(double amount);
+	ResponseMessageInfo deposit(double amount);
 
-	MessageInfo checkBalance();
+	ResponseMessageInfo checkBalance();
 
 }

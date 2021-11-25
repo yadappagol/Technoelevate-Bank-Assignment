@@ -22,7 +22,7 @@ import com.example.demo.dto.AccountHolder;
 import com.example.demo.dto.Admin;
 import com.example.demo.exception.AccountHolderException;
 import com.example.demo.exception.AdminException;
-import com.example.demo.message.MessageInfo;
+import com.example.demo.message.ResponseMessageInfo;
 
 @Service
 public class AccountHolderServiceImpl implements AccountHolderService, UserDetailsService {
@@ -42,7 +42,9 @@ public class AccountHolderServiceImpl implements AccountHolderService, UserDetai
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		LOGGER.info("Loading UserName And Password inside AccountholderServiceImpl Class!!");
 		if (!username.equals("Admin")) {
+			
 			accountHolder = accountholderdao.findByAccountholdername(username);
 			if (accountHolder == null) {
 				LOGGER.error("User Not in Data Base");
@@ -63,14 +65,14 @@ public class AccountHolderServiceImpl implements AccountHolderService, UserDetai
 
 	@Override
 	public AccountHolder findByUserName(String username) {
-		AccountHolder accountHolder = (AccountHolder) accountholderdao.findByAccountholdername(username);
+		accountHolder = (AccountHolder) accountholderdao.findByAccountholdername(username);
 		LOGGER.info("Successfully Logged in " + username);
 		return accountHolder;
 	}
 
 
 	@Override
-	public MessageInfo withdraw(double withdrawamount) {
+	public ResponseMessageInfo withdraw(double withdrawamount) {
 		if (withdrawamount <= 25000) {
 			if (withdrawamount % 100 == 0) {
 				if (accountHolder.getBalance() > 1000) {
@@ -78,9 +80,9 @@ public class AccountHolderServiceImpl implements AccountHolderService, UserDetai
 						accountHolder.setBalance(accountHolder.getBalance() - Math.round((withdrawamount * 1.0043)));
 						accountholderdao.save(accountHolder);
 						count++;
-						LOGGER.info("WITHDRAWAL IS SUCCESSFUL.THE WITHDRAW AMOUNT IS : " + withdrawamount);
-						return new MessageInfo(HttpStatus.OK.value(), new Date(), false,
-								withdrawamount + " AMOUNT SUCCESSFULLY WITHDRAWN ", accountHolder);
+						LOGGER.info("WITHDRAWAL IS SUCCESSFUL.THE WITHDRAW AMOUNT IS : Rs." + withdrawamount);
+						return new ResponseMessageInfo(HttpStatus.OK.value(), new Date(), false,
+								"Rs. "+withdrawamount + " AMOUNT SUCCESSFULLY WITHDRAWN ", accountHolder);
 					} else {
 						LOGGER.error("YOU EXHAUSTED YOUR MONTHLY WITHDRAW LIMIT!!MONTHLY WITHDRAW LIMIT IS 3!!!");
 						throw new AccountHolderException(
@@ -105,15 +107,15 @@ public class AccountHolderServiceImpl implements AccountHolderService, UserDetai
 	}
 
 	@Override
-	public MessageInfo deposit(double depositamount) {
+	public ResponseMessageInfo deposit(double depositamount) {
 		if (depositamount <= 50000) {
 			if (depositamount % 100 == 0) {
 				if (depositamount >= 500) {
 					accountHolder.setBalance(accountHolder.getBalance() + Math.round((depositamount * (1 - 0.0026))));
 					accountholderdao.save(accountHolder);
 					LOGGER.info("SUCCESSFULLY DEPOSITED AND DEPOSITED AMOUNT IS : " + depositamount);
-					return new MessageInfo(HttpStatus.OK.value(), new Date(), false,
-							depositamount + "  AMOUNT SUCCESSFULLY DEPOSITED  ", accountHolder);
+					return new ResponseMessageInfo(HttpStatus.OK.value(), new Date(), false,
+							"Rs. "+depositamount + "  AMOUNT SUCCESSFULLY DEPOSITED  ", accountHolder);
 				} else {
 					LOGGER.error("YOUR AMOUNT SHOULD BE GREATER THAN  RS.500 !!");
 					throw new AccountHolderException("YOUR AMOUNT SHOULD BE GREATER THAN RS.500!!");
@@ -131,15 +133,11 @@ public class AccountHolderServiceImpl implements AccountHolderService, UserDetai
 	}
 
 	@Override
-	public MessageInfo checkBalance() {
-
-		if (accountHolder == null || accountHolder.getAccountholdername() == null) {
-			throw new AccountHolderException("Please Login First!!!");
-		}
+	public ResponseMessageInfo checkBalance() {
 
 		AccountHolder accountHolder2 = accountholderdao.findByAccountholdername(accountHolder.getAccountholdername());
-		return new MessageInfo(HttpStatus.OK.value(), new Date(), false,
-				"Your Balance is : " + Math.round(accountHolder2.getBalance()), accountHolder2);
+		return new ResponseMessageInfo(HttpStatus.OK.value(), new Date(), false,
+				"Hi "+accountHolder2.getAccountholdername()+" Your Balance is : Rs." + Math.round(accountHolder2.getBalance()), accountHolder2);
 
 	}
 	

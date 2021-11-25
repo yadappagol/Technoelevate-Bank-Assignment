@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Admin_Table")
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({ "admin_password" })
+@JsonIgnoreProperties({ "admin_id" })
 public class Admin implements Serializable {
 	@Id
 	private int admin_id;

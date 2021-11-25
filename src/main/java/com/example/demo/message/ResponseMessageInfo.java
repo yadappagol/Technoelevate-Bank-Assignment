@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageInfo implements Serializable {
+public class ResponseMessageInfo implements Serializable {
 
 	private int statusCode;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
@@ -24,7 +24,7 @@ public class MessageInfo implements Serializable {
 	private String message;
 	private Object details;
 
-	public MessageInfo(boolean error, String message, List<AccountHolder> details) {
+	public ResponseMessageInfo(boolean error, String message, List<AccountHolder> details) {
 		this.error = error;
 		this.message = message;
 
