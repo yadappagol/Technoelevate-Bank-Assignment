@@ -33,8 +33,12 @@ public class AccountHolder implements Serializable {
 		this.password = password;
 	}
 
-	
-	
+
+	public AccountHolder(String accountholdername, String password) {
+		this.accountholdername = accountholdername;
+		this.password = password;
+	}
+
 	
 	
 }
